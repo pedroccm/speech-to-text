@@ -1,6 +1,6 @@
 # Speech-to-Text Application
 
-A modern, real-time speech-to-text transcription web application with dual transcription methods for maximum compatibility and accuracy.
+A fast and practical speech-to-text transcription application with keyboard shortcuts for agile daily use and dual transcription methods for maximum compatibility.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://reactjs.org/)
@@ -178,41 +178,3 @@ Transcribe audio using OpenAI Whisper.
 }
 ```
 
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Performance
-
-- **Real-time Processing**: Web Speech API provides instant feedback
-- **Efficient Audio Handling**: Optimized MediaRecorder configuration
-- **Minimal Bundle**: Tree-shaking and code splitting
-- **Mobile Optimized**: Responsive design with touch-friendly controls
-
-## Security
-
-- **API Key Protection**: Environment variables for sensitive data
-- **Input Validation**: File type and size validation
-- **CORS Configuration**: Secure API endpoint setup
-- **No Audio Storage**: Audio is processed and discarded immediately
-
-## Limitations
-
-### Current Limitations
-- **Browser Support**: Web Speech API limited to Chromium browsers
-- **File Size**: 25MB limit for OpenAI Whisper uploads
-- **API Costs**: OpenAI charges per minute of audio processed
-- **Network Dependency**: OpenAI method requires internet connection
-
-### Planned Improvements
-- Enhanced error handling and retry mechanisms
-- Audio compression before upload
-- Transcript history and session management
-- Real-time collaborative editing
-- Mobile app development
