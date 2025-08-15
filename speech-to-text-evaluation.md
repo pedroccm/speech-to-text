@@ -1,6 +1,6 @@
 # AI Model Selection & Product Strategy
 
-## 3. AI Model Selection & Justification
+## AI Model Selection & Justification
 
 ### Speech-to-Text Model Choices
 
@@ -61,7 +61,7 @@ Moreover, OpenAI Whisper serves as a **universal compatibility solution** that w
 
 For future implementations, the Web Speech API could be enhanced by connecting it to a Large Language Model (LLM) to improve text fluidity and correct minor transcription errors. This approach would maintain the cost-effectiveness while adding post-processing intelligence at a fraction of Whisper's cost.
 
-## 4. Product Considerations for RHEI Employees
+## Product Considerations for RHEI Employees
 
 ### Daily Workflow Integration
 
@@ -81,7 +81,7 @@ The application is designed to integrate effortlessly into RHEI employees' daily
 
 **Typical Usage Scenarios:**
 
-1. **Email Dictation**: Dictate emails while walking or when hands are occupied
+1. **Email Dictation**: Dictate emails and chats
 2. **Task Documentation**: Voice-record task updates and copy to project management tools
 3. **Quick Memos**: Capture ideas and thoughts without interrupting current work
 4. **Code Comments**: Dictate complex explanations for code documentation
@@ -93,7 +93,6 @@ The application is designed to integrate effortlessly into RHEI employees' daily
 **Chrome Extension Strategy:**
 - **Global Shortcut Access**: System-wide keyboard shortcuts that work across all applications
 - **Context Menu Integration**: Right-click to "Dictate to this field" in any web form
-- **Meeting Integration**: Automatic transcription overlay for Google Meet, Zoom, Teams
 - **Quick Capture**: Floating transcription window that can be positioned anywhere on screen
 - **Direct Tool Integration**: One-click insertion into Slack, Gmail, Notion, Jira, and other productivity tools
 
@@ -131,7 +130,7 @@ This approach transforms speech-to-text from a separate tool into an invisible e
 
 #### Quantitative Metrics
 
-**PostHog Implementation Strategy:**
+**PostHog and Data Analytics Strategy:**
 
 **Primary Metrics Collection:**
 - **Minutes Transcribed per User**: Core productivity indicator tracking total transcription time
@@ -147,7 +146,7 @@ This approach transforms speech-to-text from a separate tool into an invisible e
 - **User Surveys**: In-app feedback collection triggered after specific usage milestones
 
 **Effort Savings Calculation:**
-PostHog will track:
+The system will track:
 - Average typing speed baseline per user (measured during onboarding)
 - Transcription accuracy rates requiring manual corrections
 - Time saved calculation: `(Words Transcribed ÷ Personal Typing WPM) - Transcription Time - Correction Time`

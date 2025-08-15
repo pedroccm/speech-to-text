@@ -177,61 +177,39 @@ Response: {
 
 ### Future Improvements
 
-#### Short-term Enhancements
+**Session Management**:
+- Save transcripts locally (localStorage/IndexedDB)
+- Transcript history and organization
+- Named sessions and projects
 
-1. **Enhanced Audio Support**:
-   - Audio file upload from device storage
-   - Support for more audio formats (MP3, FLAC, etc.)
-   - Audio compression before upload to reduce costs
+**Advanced Transcription**:
+- Speaker identification and diarization
+- Custom vocabulary/terminology support
+- Real-time translation capabilities
+- Punctuation and formatting improvements
 
-2. **Better Error Handling**:
-   - Retry mechanisms for failed transcriptions
-   - Better network error recovery
-   - Graceful degradation strategies
+**Collaboration Features**:
+- Share transcripts via links
+- Real-time collaborative editing
+- Comments and annotations
 
-3. **User Experience**:
-   - Transcript editing capabilities
-   - Export options (TXT, PDF, DOCX)
-   - Undo/redo functionality
-   - Search within transcripts
+**AI Integration**:
+- Smart summarization of long transcripts
+- Key topic extraction and tagging
+- Sentiment analysis and insights
+- Integration with other AI models (Claude, GPT-4, etc.)
 
-#### Medium-term Features
+**Enterprise Features**:
+- User authentication and accounts
+- Team workspaces and permissions
+- API access for developers
+- Custom model training and fine-tuning
 
-1. **Session Management**:
-   - Save transcripts locally (localStorage/IndexedDB)
-   - Transcript history and organization
-   - Named sessions and projects
-
-2. **Advanced Transcription**:
-   - Speaker identification and diarization
-   - Custom vocabulary/terminology support
-   - Real-time translation capabilities
-   - Punctuation and formatting improvements
-
-3. **Collaboration Features**:
-   - Share transcripts via links
-   - Real-time collaborative editing
-   - Comments and annotations
-
-#### Long-term Roadmap
-
-1. **AI Integration**:
-   - Smart summarization of long transcripts
-   - Key topic extraction and tagging
-   - Sentiment analysis and insights
-   - Integration with other AI models (Claude, GPT-4, etc.)
-
-2. **Enterprise Features**:
-   - User authentication and accounts
-   - Team workspaces and permissions
-   - API access for developers
-   - Custom model training and fine-tuning
-
-3. **Platform Extensions**:
-   - Desktop application (Electron)
-   - Mobile app (React Native)
-   - Browser extensions for meeting transcription
-   - Integration with video conferencing tools (Zoom, Teams, etc.)
+**Platform Extensions**:
+- Desktop application (Electron)
+- Mobile app (React Native)
+- Browser extensions for meeting transcription
+- Integration with video conferencing tools (Zoom, Teams, etc.)
 
 ## Development Story: Building the Application
 
@@ -295,7 +273,7 @@ I iteratively refined the layout to be extremely minimal and functional in a sma
 
 ### Framework Choice: Next.js
 
-I chose Next.js 15 for several strategic reasons:
+I chose Next.js for several strategic reasons:
 
 1. **Cloud Integration**: Seamless deployment to platforms like Vercel
 2. **Versatility**: Full-stack capabilities with API routes for Whisper integration
@@ -309,4 +287,4 @@ Next.js provides the flexibility to easily extend the application with additiona
 
 The final step was deploying the application to production and making it available for real-world use. The simplicity of the codebase and the robustness of Next.js made this process straightforward, allowing for rapid iteration based on user feedback.
 
-This development approach—starting with research, making strategic architectural decisions, rapid prototyping with AI assistance, and iterative user-focused refinement—resulted in a production-ready application that balances simplicity with powerful functionality.
+This development approach starting with research, making strategic architectural decisions, rapid prototyping with AI assistance, and iterative user-focused refinement resulted in a production-ready application that balances simplicity with powerful functionality.
