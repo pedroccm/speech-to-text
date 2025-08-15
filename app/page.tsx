@@ -78,6 +78,8 @@ export default function SpeechToTextApp() {
     const [recordingTime, setRecordingTime] = useState(0)
     const [autoCopyEnabled, setAutoCopyEnabled] = useState(false)
     const [justStoppedRecording, setJustStoppedRecording] = useState(false)
+    const [mobileDetectionTimeout, setMobileDetectionTimeout] = useState<NodeJS.Timeout | null>(null)
+    const [isMobile, setIsMobile] = useState(false)
 
     const recognitionRef = useRef<SpeechRecognition | null>(null)
     const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -146,6 +148,29 @@ export default function SpeechToTextApp() {
             if (timerRef.current) {
                 clearInterval(timerRef.current)
             }
+            if (mobileDetectionTimeout) {
+                clearTimeout(mobileDetectionTimeout)
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        // Detect mobile device
+        if (typeof window !== "undefined") {
+            const checkMobile = () => {
+                const userAgent = navigator.userAgent.toLowerCase()
+                const mobileKeywords = ['android', 'iphone', 'ipad', 'ipod', 'blackberry', 'windows phone', 'mobile', 'webos']
+                const isMobileUA = mobileKeywords.some(keyword => userAgent.includes(keyword))
+                
+                // Also check for touch capability and small screen as secondary indicators
+                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+                const isSmallScreen = window.innerWidth <= 768
+                
+                // Combine indicators but prioritize user agent
+                return isMobileUA || (isTouchDevice && isSmallScreen)
+            }
+            
+            setIsMobile(checkMobile())
         }
     }, [])
 
@@ -212,6 +237,19 @@ export default function SpeechToTextApp() {
             recognition.onstart = () => {
                 setIsListening(true)
                 setError("")
+                
+                // Set a timeout to detect mobile Web Speech API limitations
+                // Many mobile browsers stop after 5-10 seconds without error
+                const timeout = setTimeout(() => {
+                    if (isListening && recognitionRef.current) {
+                        setIsSupported(false)
+                        setTranscriptionMethod('aiml')
+                        setError("Web Speech API appears to have limited functionality on this device. Switched to OpenAI transcription for better reliability.")
+                        recognitionRef.current.stop()
+                    }
+                }, 8000) // 8 seconds to catch the 5-second timeout issue
+                
+                setMobileDetectionTimeout(timeout)
             }
 
             recognition.onend = () => {
@@ -219,6 +257,20 @@ export default function SpeechToTextApp() {
                 setInterimTranscript("")
                 stopTimer()
                 setJustStoppedRecording(true)
+                
+                // Clear mobile detection timeout
+                if (mobileDetectionTimeout) {
+                    clearTimeout(mobileDetectionTimeout)
+                    setMobileDetectionTimeout(null)
+                }
+                
+                // If recording stopped unexpectedly in less than 8 seconds and no error was shown
+                // this indicates mobile Web Speech API limitations
+                if (recordingTime < 8 && recordingTime > 3 && !error && transcriptionMethod === 'web-api') {
+                    setIsSupported(false)
+                    setTranscriptionMethod('aiml')
+                    setError("Web Speech API stopped unexpectedly (common on mobile devices). Switched to OpenAI transcription for better reliability.")
+                }
             }
 
             recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -515,7 +567,7 @@ export default function SpeechToTextApp() {
                                 variant={(isListening || isRecording) ? "destructive" : "default"}
                                 className="flex items-center gap-2"
                                 disabled={isTranscribing}
-                                title="Press Space to start/stop recording"
+                                title={isMobile ? "Tap to start/stop recording" : "Press Space to start/stop recording"}
                             >
                                 {(isListening || isRecording) ? (
                                     <>
@@ -525,7 +577,7 @@ export default function SpeechToTextApp() {
                                 ) : (
                                     <>
                                         <Mic className="h-5 w-5" />
-                                        Start Recording <span className="text-xs opacity-60">(Space)</span>
+                                        Start Recording {!isMobile && <span className="text-xs opacity-60">(Space)</span>}
                                     </>
                                 )}
                             </Button>
@@ -558,7 +610,7 @@ export default function SpeechToTextApp() {
                                     size="sm"
                                     disabled={!transcript}
                                     className={`flex items-center gap-1 transition-colors ${copySuccess ? 'bg-green-100 text-green-700 border-green-300' : ''}`}
-                                    title="Copy to clipboard (Ctrl+C)"
+                                    title={isMobile ? "Copy to clipboard" : "Copy to clipboard (Ctrl+C)"}
                                 >
                                     {copySuccess ? (
                                         <>
@@ -568,7 +620,7 @@ export default function SpeechToTextApp() {
                                     ) : (
                                         <>
                                             <Copy className="h-4 w-4" />
-                                            Copy <span className="text-xs opacity-60">(Ctrl+C)</span>
+                                            Copy {!isMobile && <span className="text-xs opacity-60">(Ctrl+C)</span>}
                                         </>
                                     )}
                                 </Button>
@@ -578,10 +630,10 @@ export default function SpeechToTextApp() {
                                     size="sm"
                                     disabled={!transcript}
                                     className="flex items-center gap-1"
-                                    title="Clear transcript (Ctrl+D)"
+                                    title={isMobile ? "Clear transcript" : "Clear transcript (Ctrl+D)"}
                                 >
                                     <Trash2 className="h-4 w-4" />
-                                    Clear <span className="text-xs opacity-60">(Ctrl+D)</span>
+                                    Clear {!isMobile && <span className="text-xs opacity-60">(Ctrl+D)</span>}
                                 </Button>
                             </div>
                         </CardTitle>
@@ -604,7 +656,7 @@ export default function SpeechToTextApp() {
                                 className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
                             />
                             <label htmlFor="autoCopy" className="text-sm font-medium cursor-pointer text-gray-700">
-                                Auto copy transcript after recording (Ctrl+C)
+                                Auto copy transcript after recording{!isMobile && " (Ctrl+C)"}
                             </label>
                         </div>
                     </CardContent>
